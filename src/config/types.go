@@ -3,10 +3,11 @@ package config
 // Config is config.json structure of all available settings
 type Config struct {
 	Username string `json:"username"`
-	Password string `json:"Password"`
+	Password string `json:"password"`
 }
 
-type VMData struct {
+// FullDetails is a struct of `user/fullDetails` endpoint
+type FullDetails struct {
 	Id                    float64     `json:"id"`
 	Email                 string      `json:"email"`
 	FirstName             string      `json:"firstName"`
@@ -157,5 +158,4 @@ type VMData struct {
 		ContractStartDate                     interface{} `json:"contractStartDate"`
 		ContractEndDate                       interface{} `json:"contractEndDate"`
 	} `json:"msisdnDetails"`
-	UpdateTimestamp int64 `json:"updateTimestamp"`
 }

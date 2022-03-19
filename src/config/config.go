@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+// Get returns current config from `config.json` file
 func Get() Config {
 	file, err := os.Open("config.json")
 	if err != nil {

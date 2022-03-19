@@ -5,6 +5,8 @@
 *.so
 *.dylib
 .idea
+config.json
+cookie.txt
 
 # Test binary, built with `go test -c`
 *.test

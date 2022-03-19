@@ -6,6 +6,7 @@ import (
 	"github.com/MrBoombastic/VirginMobileClient/src/config"
 	"github.com/MrBoombastic/VirginMobileClient/src/cookie"
 	"github.com/MrBoombastic/VirginMobileClient/src/http"
+	"github.com/MrBoombastic/VirginMobileClient/src/tools"
 	"log"
 	"math"
 	"os"
@@ -29,6 +30,14 @@ func main() {
 	// Saving most important data to info.txt file
 	var text string
 	for _, number := range data.MsisdnDetails {
+		numberValidDate, err := tools.FormatVMDate(number.CustomerBalancesDto.GeneralBalance.ValidDate)
+		if err != nil {
+			log.Fatal(err)
+		}
+		parsedComplexBundleValidDate, err := tools.FormatVMDate(number.ComplexBundleValidDate)
+		if err != nil {
+			log.Fatal(err)
+		}
 		text += fmt.Sprintf(`Phone number: %v
 Valid until: %v
 Balance: %v
@@ -40,12 +49,11 @@ Mobile data: %v
 SMS: %v
 Updated: %v
 
-`, number.Msisdn, number.CustomerBalancesDto.GeneralBalance.ValidDate,
-			number.CustomerBalancesDto.GeneralBalance.Quantity, number.TariffName, number.ComplexBundleName,
-			number.ComplexBundleValidDate, math.Round(number.CustomerBalancesDto.ComplexBundleVoiceBalance.Quantity/60), number.CustomerBalancesDto.ComplexBundleVoiceBalance.Quantity,
-			number.CustomerBalancesDto.DataBalance.Quantity, number.CustomerBalancesDto.SmsBalance.Quantity, time.Now().Format("2006.01.02 15:04:05"))
+`, number.Msisdn, numberValidDate.Format("2 Jan 2006 15:04:05"), number.CustomerBalancesDto.GeneralBalance.Quantity, number.TariffName, number.ComplexBundleName,
+			parsedComplexBundleValidDate.Format("2 Jan 2006 15:04:05"), math.Round(number.CustomerBalancesDto.ComplexBundleVoiceBalance.Quantity/60),
+			number.CustomerBalancesDto.ComplexBundleVoiceBalance.Quantity, tools.ByteCountIEC(int64(number.CustomerBalancesDto.DataBalance.Quantity)*1024), number.CustomerBalancesDto.SmsBalance.Quantity,
+			time.Now().Format("2006.01.02 15:04:05"))
 	}
-
 	err = os.WriteFile("info.txt", []byte(text), 0644)
 	if err != nil {
 		log.Fatal(err)
@@ -60,4 +68,6 @@ Updated: %v
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	log.Println("Done. Output saved to info.txt and info.json files.")
 }

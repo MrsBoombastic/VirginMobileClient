@@ -7,6 +7,7 @@ import (
 	"github.com/MrBoombastic/VirginMobileClient/src/cookie"
 	"github.com/MrBoombastic/VirginMobileClient/src/http"
 	"log"
+	"math"
 	"os"
 	"time"
 )
@@ -41,7 +42,7 @@ Updated: %v
 
 `, number.Msisdn, number.CustomerBalancesDto.GeneralBalance.ValidDate,
 			number.CustomerBalancesDto.GeneralBalance.Quantity, number.TariffName, number.ComplexBundleName,
-			number.ComplexBundleValidDate, number.CustomerBalancesDto.ComplexBundleVoiceBalance.Quantity/60, number.CustomerBalancesDto.ComplexBundleVoiceBalance.Quantity,
+			number.ComplexBundleValidDate, math.Round(number.CustomerBalancesDto.ComplexBundleVoiceBalance.Quantity/60), number.CustomerBalancesDto.ComplexBundleVoiceBalance.Quantity,
 			number.CustomerBalancesDto.DataBalance.Quantity, number.CustomerBalancesDto.SmsBalance.Quantity, time.Now().Format("2006.01.02 15:04:05"))
 	}
 
